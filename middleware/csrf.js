@@ -8,7 +8,7 @@ const useCSRFProtection = (app, { getErrorResponse, debug, cookieRefreshTime = 6
           return request.body.csrf_token;
         }
 
-        return request.get("X-XSRF-TOKEN");
+        return request.get("X-CSRF-TOKEN");
       },
     })
   );
@@ -28,9 +28,9 @@ const useCSRFProtection = (app, { getErrorResponse, debug, cookieRefreshTime = 6
       }
     }
 
-    response.set("X-XSRF-TOKEN", request.csrfToken());
+    response.set("X-CSRF-TOKEN", request.csrfToken());
 
-    response.cookie("XSRF-TOKEN", request.csrfToken(), { sameSite: "lax" });
+    response.cookie("CSRF-TOKEN", request.csrfToken(), { sameSite: "lax" });
 
     if (getErrorResponse) {
       getErrorResponse(error, request, response, next);
@@ -40,7 +40,7 @@ const useCSRFProtection = (app, { getErrorResponse, debug, cookieRefreshTime = 6
   });
 
   const attachCSRFCookie = (request, response) => {
-    response.cookie("XSRF-TOKEN", request.csrfToken(), { sameSite: "lax" });
+    response.cookie("CSRF-TOKEN", request.csrfToken(), { sameSite: "lax" });
 
     request.session.csrfCookieSet = Date.now();
   };

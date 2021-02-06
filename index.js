@@ -39,7 +39,7 @@ app.use(
   })
 );
 
-// useCSRFProtection(app);
+useCSRFProtection(app);
 
 app.use(express.json());
 
