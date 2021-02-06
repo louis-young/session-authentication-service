@@ -4,6 +4,37 @@ import argon2 from "argon2";
 
 const router = Router();
 
+const regenerateSession = (session) => {
+  try {
+    return session.regenerate((error) => {
+      if (error) {
+        throw new Error();
+      }
+
+      return session;
+    });
+  } catch (error) {
+    console.error(error.message);
+  }
+};
+
+const loginUser = async (request, user) => {
+  const session = regenerateSession(request.session);
+
+  session.user_id = user.id;
+
+  request.session = session;
+  request.user = user;
+
+  return request;
+};
+
+/**
+ * Register user route.
+ *
+ * TODO: Validate request data.
+ */
+
 router.post("/register", async (request, response) => {
   try {
     const { email, password } = request.body;
@@ -41,24 +72,29 @@ router.post("/register", async (request, response) => {
     // Hash the password.
     const hash = await argon2.hash(password);
 
-    await knex("users").insert({ email, password: hash });
+    // Insert the user and return the ID and email.
+    const user = await knex("users").insert({ email, password: hash }).returning(["id", "email"]);
 
-    const user = await knex("users").select(["email"]).where({ email }).first();
+    // Regenerate the session.
+    request.session.regenerate((error) => {
+      if (error) {
+        throw new Error();
+      }
+    });
 
-    // TODO: Log the user in...
+    request.session.userId = user.id;
 
-    response.json(user);
+    // TODO: Find better solution to accessing the 0th index, or to get Knex to return an object.
+    response.json({
+      message: "Successfully registered and logged user in.",
+      user: {
+        id: user[0].id,
+        email: user[0].email,
+      },
+    });
   } catch (error) {
     response.status(500).json({ error: error.message });
   }
-});
-
-router.get("/", (request, response) => {
-  const n = request.session.views || 0;
-
-  request.session.views = n + 1;
-
-  response.end(`${n} views.`);
 });
 
 export default router;
