@@ -47,6 +47,6 @@ const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`Application listening on port ${PORT}.`));
 
-app.use("/register", register);
-app.use("/login", login);
-app.use("/user", user);
+app.use("/api/register", register);
+app.use("/api/login", login);
+app.use("/api/user", user);

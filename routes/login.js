@@ -8,7 +8,7 @@ import { regenerateSession } from "../utilities/utilities.js";
 
 const router = Router();
 
-router.post("/login", async (request, response) => {
+router.post("/", async (request, response) => {
   try {
     const { email, password } = request.body;
 
