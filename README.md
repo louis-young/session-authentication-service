@@ -8,7 +8,7 @@ This is a from-scratch back-end authentication system written in Node/Express wi
 
 ## Motivation
 
-I built this application to learn more about authentication and security, and to provide a boilerplate to use for future projects. 
+I built this application to learn more about authentication and security, and to provide a boilerplate to use for future projects.
 
 ## Stack
 
@@ -25,3 +25,7 @@ I built this application to learn more about authentication and security, and to
 - `csurf`
 - `zxcvbn`
 - `cors`
+
+## Mentions
+
+Many thanks to [samsch](https://github.com/samsch) for invaluable authentication and general security advice.
