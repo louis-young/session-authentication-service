@@ -15,4 +15,5 @@ A session-based authentication system written in Node/Express with Knex and Post
 - `express-session`
 - `connect-session-knex`
 - `csurf`
+- `zxcvbn`
 - `cors`
