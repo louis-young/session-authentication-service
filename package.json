@@ -1,0 +1,26 @@
+{
+  "name": "postgres-knex-express-boilerplate",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "Minimal boilerplate for creating a server using Postgres, Knex and Express.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "migrate": "knex migrate:latest --esm",
+    "rollback": "knex migrate:rollback --esm",
+    "seed": "knex seed:run --esm"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "argon2": "^0.27.1",
+    "connect-session-knex": "^2.0.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "knex": "^0.21.17",
+    "nodemon": "^2.0.7",
+    "pg": "^8.5.1"
+  }
+}
