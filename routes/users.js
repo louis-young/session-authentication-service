@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { request, Router } from "express";
 import knex from "../knex/knex.js";
 import argon2 from "argon2";
 
@@ -90,6 +90,53 @@ router.post("/register", async (request, response) => {
       user: {
         id: user[0].id,
         email: user[0].email,
+      },
+    });
+  } catch (error) {
+    response.status(500).json({ error: error.message });
+  }
+});
+
+router.post("/login", async (request, response) => {
+  try {
+    const { email, password } = request.body;
+
+    // Check fields are present.
+    if (!email || !password) {
+      return response.status(400).json({ error: "An email and password are required." });
+    }
+
+    // Check if user exists.
+    const user = await knex("users").where({ email }).first();
+
+    if (!user) {
+      return response.status(400).json({ error: "Incorrect email and password combination." });
+    }
+
+    // Get hash from database (hashed user password).
+    const hash = await knex("users").select("password").where({ email }).first();
+
+    // Check if the passwords match.
+    const passwordsMatch = await argon2.verify(hash.password, password);
+
+    if (!passwordsMatch) {
+      return response.status(400).json({ error: "Incorrect email and password combination." });
+    }
+
+    // Regenerate the session.
+    request.session.regenerate((error) => {
+      if (error) {
+        throw new Error();
+      }
+    });
+
+    request.session.userId = user.id;
+
+    response.json({
+      message: "Successfully logged user in.",
+      user: {
+        id: user.id,
+        email: user.email,
       },
     });
   } catch (error) {
