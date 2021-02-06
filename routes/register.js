@@ -48,7 +48,7 @@ router.post("/", async (request, response) => {
       },
     });
   } catch (error) {
-    response.status(500).json({ error: error.message }); // TODO: Make generic in production.
+    response.status(500).json({ error: "Something went wrong. Please try again." });
   }
 });
 

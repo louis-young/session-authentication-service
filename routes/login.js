@@ -19,13 +19,13 @@ router.post("/", async (request, response) => {
     const user = await knex("users").where({ email }).first();
 
     if (!user) {
-      return response.status(400).json({ error: "Incorrect email and password combination." });
+      return response.status(400).json({ error: "Invalid email and password combination." });
     }
 
     const passwordsMatch = await argon2.verify(user.password, password);
 
     if (!passwordsMatch) {
-      return response.status(400).json({ error: "Incorrect email and password combination." });
+      return response.status(400).json({ error: "Invalid email and password combination." });
     }
 
     await regenerateSession(request.session);
@@ -40,7 +40,7 @@ router.post("/", async (request, response) => {
       },
     });
   } catch (error) {
-    response.status(500).json({ error: error.message }); // TODO: Make generic in production.
+    response.status(500).json({ error: "Something went wrong. Please try again." });
   }
 });
 
