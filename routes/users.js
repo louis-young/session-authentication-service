@@ -1,4 +1,4 @@
-import { request, Router } from "express";
+import { request, response, Router } from "express";
 import knex from "../knex/knex.js";
 import argon2 from "argon2";
 
@@ -139,6 +139,26 @@ router.post("/login", async (request, response) => {
         email: user.email,
       },
     });
+  } catch (error) {
+    response.status(500).json({ error: error.message });
+  }
+});
+
+router.get("/", async (request, response) => {
+  try {
+    const { userId } = request.session;
+
+    if (typeof userId !== "number") {
+      return response.status(401).json({ error: "User not authenticated." });
+    }
+
+    const user = await knex("users").select("id", "email").where({ id: userId });
+
+    if (!user) {
+      return response.status(401).json({ error: "User not authenticated." });
+    }
+
+    response.json(user);
   } catch (error) {
     response.status(500).json({ error: error.message });
   }
