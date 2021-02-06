@@ -2,15 +2,17 @@
 
 A session-based authentication system written in Node/Express with Knex and Postgres.
 
-## Technologies
+## Stack
 
 - Node
 - Express
 - Postgres
 - Knex
 
-## Modules
+## Packages
 
 - `argon2`
 - `express-session`
 - `connect-session-knex`
+- `csurf`
+- `cors`
