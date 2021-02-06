@@ -2,6 +2,7 @@ import { Router } from "express";
 
 import knex from "../knex/knex.js";
 
+import zxcvbn from "zxcvbn";
 import argon2 from "argon2";
 
 import { regenerateSession } from "../utilities/utilities.js";
@@ -22,13 +23,16 @@ router.post("/", async (request, response) => {
       return response.status(400).json({ error: "A user with this email address already exists." });
     }
 
-    // TODO: Implement zxcvbn.
     const minimumPasswordLength = 8;
 
     if (password.length < minimumPasswordLength) {
-      return response
-        .status(400)
-        .json({ error: `A password must be no less than ${minimumPasswordLength} characters.` });
+      return response.status(400).json({ error: `A password must be at least ${minimumPasswordLength} characters.` });
+    }
+
+    const passwordScore = zxcvbn(password).score;
+
+    if (passwordScore < 2) {
+      return response.status(400).json({ error: `Please use a stronger password.` });
     }
 
     const hash = await argon2.hash(password);
