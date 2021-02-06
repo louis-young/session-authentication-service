@@ -1,12 +1,13 @@
 import csrf from "csurf";
 
-export default function useCSRFProtection(app, { getErrorResponse, debug, cookieRefreshTime = 60000 } = {}) {
+const useCSRFProtection = (app, { getErrorResponse, debug, cookieRefreshTime = 60000 } = {}) => {
   app.use(
     csrf({
       value: (request) => {
         if (request.get("Content-Type") === "application/x-www-form-urlencoded") {
           return request.body.csrf_token;
         }
+
         return request.get("X-XSRF-TOKEN");
       },
     })
@@ -53,4 +54,6 @@ export default function useCSRFProtection(app, { getErrorResponse, debug, cookie
 
     next();
   });
-}
+};
+
+export default useCSRFProtection;
