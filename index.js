@@ -1,19 +1,28 @@
 import express from "express";
 import dotenv from "dotenv";
-import users from "./routes/users.js";
-import session from "express-session";
+import cors from "cors";
 import connectSessionKnex from "connect-session-knex";
+import session from "express-session";
 import knex from "./knex/knex.js";
+
+import useCSRFProtection from "./middleware/csrf.js";
+
+import register from "./routes/register.js";
+import login from "./routes/login.js";
+import user from "./routes/user.js";
 
 dotenv.config();
 
 const app = express();
 
+app.use(
+  cors({
+    origin: process.env.CLIENT_ORIGIN,
+    credentials: true,
+  })
+);
+
 const KnexSessionStore = connectSessionKnex(session);
-
-const store = new KnexSessionStore({ knex });
-
-// app.set('trust proxy', 1); // Set with proxy.
 
 app.use(
   session({
@@ -21,18 +30,23 @@ app.use(
       httpOnly: true,
       secure: false, // `true` on HTTPS.
       sameSite: "lax",
+      maxAge: 1000 * 3600 * 24 * 30,
     },
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    store,
+    store: new KnexSessionStore({ knex }),
   })
 );
+
+useCSRFProtection(app);
 
 app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => console.log(`Server started on port ${PORT}.`));
+app.listen(PORT, () => console.log(`Application listening on port ${PORT}.`));
 
-app.use("/users", users);
+app.use("/register", register);
+app.use("/login", login);
+app.use("/user", user);
