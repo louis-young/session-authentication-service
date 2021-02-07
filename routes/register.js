@@ -37,19 +37,15 @@ router.post("/", async (request, response) => {
 
     const hash = await argon2.hash(password);
 
-    const user = await knex("users").insert({ email, password: hash }).returning(["id", "email"]);
+    const [user] = await knex("users").insert({ email, password: hash }).returning(["id", "email"]);
 
     await regenerateSession(request.session);
 
-    request.session.userId = user[0].id;
+    request.session.userId = user.id;
 
-    // TODO: Find better solution to accessing the 0th index, or to get Knex to return an object.
     response.json({
       message: "Successfully registered and logged user in.",
-      user: {
-        id: user[0].id,
-        email: user[0].email,
-      },
+      user,
     });
   } catch (error) {
     response.status(500).json({ error: "Something went wrong. Please try again." });
