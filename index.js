@@ -10,6 +10,7 @@ import useCSRFProtection from "./middleware/csrf.js";
 
 import register from "./routes/register.js";
 import login from "./routes/login.js";
+import logout from "./routes/logout.js";
 import user from "./routes/user.js";
 
 dotenv.config();
@@ -52,4 +53,5 @@ app.listen(PORT, () => console.log(`Application listening on port ${PORT}.`));
 
 app.use("/api/register", register);
 app.use("/api/login", login);
+app.use("/api/logout", logout);
 app.use("/api/user", user);

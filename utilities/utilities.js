@@ -10,4 +10,16 @@ const regenerateSession = (session) => {
   });
 };
 
-export { regenerateSession };
+const destroySession = (session) => {
+  return new Promise((resolve, reject) => {
+    session.destroy((error) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
+  });
+};
+
+export { regenerateSession, destroySession };
