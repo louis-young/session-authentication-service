@@ -4,7 +4,7 @@ A session-based authentication system written in Node/Express with Knex and Post
 
 ## Description
 
-This is a from-scratch back-end authentication system written in Node/Express with Knex and Postgres which offers generally secure session-based authentication. It uses the Argon2 password hashing algorithm, HTTP only cookies, database sessions and includes Cross-Site Request Forgery and Cross-Origin Resource Sharing protection.
+This is a from-scratch back-end authentication system written in Node/Express with Knex and Postgres which offers generally secure session-based authentication. It uses the Argon2 password hashing algorithm, HTTP only cookies, database sessions, Helmet for HTTP header security, and includes Cross-Site Request Forgery and Cross-Origin Resource Sharing protection.
 
 ## Motivation
 
@@ -24,6 +24,7 @@ I built this application to learn more about authentication and security, and to
 - `connect-session-knex`
 - `csurf`
 - `zxcvbn`
+- `helmet`
 - `cors`
 
 ## Mentions

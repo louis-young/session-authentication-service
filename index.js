@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import helmet from "helmet";
 import connectSessionKnex from "connect-session-knex";
 import session from "express-session";
 import knex from "./knex/knex.js";
@@ -21,6 +22,8 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(helmet());
 
 const KnexSessionStore = connectSessionKnex(session);
 
