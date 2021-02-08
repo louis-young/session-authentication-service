@@ -34,13 +34,7 @@ router.post("/", async (request, response) => {
 
     request.attachCSRFCookie(request, response);
 
-    response.json({
-      message: "Successfully logged user in.",
-      user: {
-        id: user.id,
-        email: user.email,
-      },
-    });
+    response.json(user);
   } catch (error) {
     console.error(error.message);
     response.status(500).json({ error: "Something went wrong. Please try again." });

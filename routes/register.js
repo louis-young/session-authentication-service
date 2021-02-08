@@ -45,10 +45,7 @@ router.post("/", async (request, response) => {
 
     request.attachCSRFCookie(request, response);
 
-    response.json({
-      message: "Successfully registered and logged user in.",
-      user,
-    });
+    response.json(user);
   } catch (error) {
     response.status(500).json({ error: "Something went wrong. Please try again." });
   }
