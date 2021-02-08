@@ -1,15 +1,18 @@
 import { Router } from "express";
 
-import { destroySession } from "../utilities/utilities.js";
+import { regenerateSession } from "../utilities/utilities.js";
 
 const router = Router();
 
 router.post("/", async (request, response) => {
   try {
-    await destroySession(request.session);
+    await regenerateSession(request.session);
+
+    request.attachCSRFCookie(request, response);
 
     response.json({ message: "Logged user out." });
   } catch (error) {
+    console.log(console.error);
     response.status(500).json({ error: "Something went wrong. Please try again." });
   }
 });
