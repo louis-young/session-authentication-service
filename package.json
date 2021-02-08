@@ -6,9 +6,9 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
-    "migrate": "knex migrate:latest --esm",
-    "rollback": "knex migrate:rollback --esm",
-    "seed": "knex seed:run --esm"
+    "migrate": "npx knex migrate:latest --esm",
+    "rollback": "npx knex migrate:rollback --esm",
+    "seed": "npx knex seed:run --esm"
   },
   "keywords": [],
   "author": "",

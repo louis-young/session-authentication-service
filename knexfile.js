@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const knexfile = {
-  client: "postgresql",
+  client: "pg",
   connection: {
     database: process.env.DATABASE,
     user: process.env.DATABASE_USER,
