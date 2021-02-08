@@ -32,6 +32,8 @@ router.post("/", async (request, response) => {
 
     request.session.userId = user.id;
 
+    request.attachCSRFCookie(request, response);
+
     response.json({
       message: "Successfully logged user in.",
       user: {
@@ -40,6 +42,7 @@ router.post("/", async (request, response) => {
       },
     });
   } catch (error) {
+    console.error(error.message);
     response.status(500).json({ error: "Something went wrong. Please try again." });
   }
 });

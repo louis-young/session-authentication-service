@@ -43,6 +43,8 @@ router.post("/", async (request, response) => {
 
     request.session.userId = user.id;
 
+    request.attachCSRFCookie(request, response);
+
     response.json({
       message: "Successfully registered and logged user in.",
       user,

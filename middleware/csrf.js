@@ -1,42 +1,22 @@
 import csrf from "csurf";
 
-const useCSRFProtection = (app, { getErrorResponse, debug, cookieRefreshTime = 60000 } = {}) => {
+const useCSRFProtection = (app, { cookieRefreshTime = 60000 } = {}) => {
   app.use(
     csrf({
-      value: (request) => {
-        if (request.get("Content-Type") === "application/x-www-form-urlencoded") {
-          return request.body.csrf_token;
-        }
-
-        return request.get("X-CSRF-TOKEN");
-      },
+      value: (request) => request.get("X-CSRF-TOKEN"),
     })
   );
 
   app.use((error, request, response, next) => {
     if (error.code !== "EBADCSRFTOKEN") {
-      next(error);
-
-      return;
-    }
-
-    if (debug) {
-      console.log("CSRF failure.");
-
-      if (typeof debug === "function") {
-        debug(error, request);
-      }
+      return next(error);
     }
 
     response.set("X-CSRF-TOKEN", request.csrfToken());
 
     response.cookie("CSRF-TOKEN", request.csrfToken(), { sameSite: "lax" });
 
-    if (getErrorResponse) {
-      getErrorResponse(error, request, response, next);
-    } else {
-      next(error);
-    }
+    next(error);
   });
 
   const attachCSRFCookie = (request, response) => {
