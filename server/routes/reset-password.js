@@ -29,7 +29,10 @@ router.post("/", async (request, response) => {
 
     const validToken = await knex("password_reset_tokens")
       .where({ email, token, used: false })
-      .where("expiration", "<=", new Date().toISOString());
+      .where("expiration", ">=", new Date().toISOString())
+      .first();
+
+    console.log(new Date().toISOString());
 
     if (!validToken) {
       return response.status(400).json({ error: "Token not found. Please try the reset password process again." });
