@@ -1,8 +1,7 @@
 {
-  "name": "postgres-knex-express-boilerplate",
+  "name": "server",
   "type": "module",
   "version": "1.0.0",
-  "description": "Minimal boilerplate for creating a server using Postgres, Knex and Express.",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
