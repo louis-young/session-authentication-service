@@ -5,6 +5,7 @@ import helmet from "helmet";
 import connectSessionKnex from "connect-session-knex";
 import session from "express-session";
 import knex from "./knex/knex.js";
+import mail from "./mail/mail.js";
 
 import useCSRFProtection from "./middleware/csrf.js";
 
@@ -12,6 +13,8 @@ import register from "./routes/register.js";
 import login from "./routes/login.js";
 import logout from "./routes/logout.js";
 import user from "./routes/user.js";
+import forgotPassword from "./routes/forgot-password.js";
+import resetPassword from "./routes/reset-password.js";
 
 dotenv.config();
 
@@ -43,7 +46,7 @@ app.use(
   })
 );
 
-useCSRFProtection(app);
+// useCSRFProtection(app);
 
 app.use(express.json());
 
@@ -55,3 +58,5 @@ app.use("/api/register", register);
 app.use("/api/login", login);
 app.use("/api/logout", logout);
 app.use("/api/user", user);
+app.use("/api/forgot-password", forgotPassword);
+app.use("/api/reset-password", resetPassword);
