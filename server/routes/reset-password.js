@@ -5,6 +5,8 @@ import knex from "../knex/knex.js";
 import zxcvbn from "zxcvbn";
 import argon2 from "argon2";
 
+import { isValidPassword } from "../utilities/utilities.js";
+
 const router = Router();
 
 router.post("/", async (request, response) => {
@@ -15,15 +17,7 @@ router.post("/", async (request, response) => {
       return response.status(400).json({ error: "A token, email and password are required." });
     }
 
-    const minimumPasswordLength = 8;
-
-    if (password.length < minimumPasswordLength) {
-      return response.status(400).json({ error: `A password must be at least ${minimumPasswordLength} characters.` });
-    }
-
-    const passwordScore = zxcvbn(password).score;
-
-    if (passwordScore < 2) {
+    if (!isValidPassword(password)) {
       return response.status(400).json({ error: `Please use a stronger password.` });
     }
 

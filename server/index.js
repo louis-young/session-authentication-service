@@ -5,7 +5,6 @@ import helmet from "helmet";
 import connectSessionKnex from "connect-session-knex";
 import session from "express-session";
 import knex from "./knex/knex.js";
-import mail from "./mail/mail.js";
 
 import useCSRFProtection from "./middleware/csrf.js";
 
@@ -46,7 +45,7 @@ app.use(
   })
 );
 
-// useCSRFProtection(app);
+useCSRFProtection(app);
 
 app.use(express.json());
 
