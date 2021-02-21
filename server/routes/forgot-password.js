@@ -4,6 +4,36 @@ import knex from "../knex/knex.js";
 import crypto from "crypto";
 import mail from "../mail/mail.js";
 
+const generatePasswordResetToken = () => {
+  const bytes = crypto.randomBytes(64).toString("base64");
+
+  const token = bytes.replace(/\//g, "_").replace(/\+/g, "-");
+
+  return token;
+};
+
+const generatePasswordResetExpiryDate = () => {
+  const date = new Date();
+
+  date.setHours(date.getHours() + 2);
+
+  return date;
+};
+
+const sendPasswordResetEmail = (token, email) => {
+  const link = `${process.env.CLIENT_BASE_URL}/reset-password?token=${token}&email=${email}`;
+
+  const content = {
+    to: email,
+    from: process.env.MAIL_FROM_ADDRESS,
+    subject: "Password Reset",
+    text: `Please visit ${link} to reset your password.`,
+    html: `Please click <a href="${link}" target="_blank">here</a> to reset your password.`,
+  };
+
+  return mail.send(content);
+};
+
 const router = Router();
 
 router.post("/", async (request, response) => {
@@ -20,27 +50,13 @@ router.post("/", async (request, response) => {
 
     await knex("password_reset_tokens").where({ email }).update({ used: true });
 
-    const bytes = crypto.randomBytes(64).toString("base64");
+    const token = generatePasswordResetToken();
 
-    const token = bytes.replace(/\//g, "_").replace(/\+/g, "-");
-
-    const expiration = new Date();
-
-    expiration.setHours(expiration.getHours() + 2);
+    const expiration = generatePasswordResetExpiryDate();
 
     await knex("password_reset_tokens").insert({ email, expiration, token, used: false });
 
-    const link = `${process.env.CLIENT_BASE_URL}/reset-password?token=${token}&email=${email}`;
-
-    const content = {
-      to: email,
-      from: process.env.MAIL_FROM_ADDRESS,
-      subject: "Password Reset",
-      text: `Please visit ${link} to reset your password.`,
-      html: `Please click <a href="${link}" target="_blank">here</a> to reset your password.`,
-    };
-
-    await mail.send(content);
+    await sendPasswordResetEmail(token, email);
 
     return response
       .status(200)
