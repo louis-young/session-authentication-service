@@ -1,6 +1,6 @@
 import { useState, useEffect, createContext } from "react";
 
-import { useLocation } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 
 import { getCSRFToken } from "../utilities/utilities";
 
@@ -13,6 +13,12 @@ const AuthenticationProvider = ({ children }) => {
   const [message, setMessage] = useState(false);
 
   const location = useLocation();
+
+  const history = useHistory();
+
+  const redirectToDashboard = () => {
+    history.push("/dashboard");
+  };
 
   useEffect(() => {
     setError(null);
@@ -62,6 +68,8 @@ const AuthenticationProvider = ({ children }) => {
       if (!response.ok) throw new Error(user.error);
 
       setUser(user);
+
+      redirectToDashboard();
     } catch (error) {
       setError(error.message);
     } finally {
@@ -89,6 +97,8 @@ const AuthenticationProvider = ({ children }) => {
       if (!response.ok) throw new Error(user.error);
 
       setUser(user);
+
+      redirectToDashboard();
     } catch (error) {
       setError(error.message);
     } finally {
@@ -115,6 +125,8 @@ const AuthenticationProvider = ({ children }) => {
       if (!response.ok) throw new Error(user.error);
 
       setUser(null);
+
+      history.push("/");
     } catch (error) {
       setError(error.message);
     } finally {
@@ -167,6 +179,8 @@ const AuthenticationProvider = ({ children }) => {
       if (!response.ok) throw new Error(user.error);
 
       setUser(user);
+
+      redirectToDashboard();
     } catch (error) {
       setError(error.message);
     } finally {
