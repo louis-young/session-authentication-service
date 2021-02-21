@@ -8,11 +8,13 @@ This is a from-scratch back-end authentication system written in Node/Express wi
 
 It uses the Argon2 password hashing algorithm, HTTP only cookies, database sessions, Helmet for HTTP header security, and features Cross-Site Request Forgery and Cross-Origin Resource Sharing protection.
 
-Features include email/password registration, login, logout and password reset functionality.
+Password reset emails are sent over SMTP via SendGrid.
+
+Includes is a basic client built in React which interfaces with the server and features protected routes and all of the required forms.
 
 ## Motivation
 
-I built this application to learn more about authentication and security, and to provide a boilerplate to use for future projects.
+I built this application to learn more about authentication and security, and to serve as a boilerplate for use in future projects.
 
 ## Stack
 
