@@ -3,7 +3,7 @@ import { Router } from "express";
 import knex from "../knex/knex.js";
 import argon2 from "argon2";
 
-import { isValidPassword, regenerateSession } from "../utilities/utilities.js";
+import { checkPasswordValidity, regenerateSession } from "../utilities/utilities.js";
 
 const router = Router();
 
@@ -21,8 +21,10 @@ router.post("/", async (request, response) => {
       return response.status(400).json({ error: "A user with this email address already exists." });
     }
 
-    if (!isValidPassword(password)) {
-      return response.status(400).json({ error: `Please use a stronger password.` });
+    const passwordValidity = checkPasswordValidity(password);
+
+    if (!passwordValidity.valid) {
+      return response.status(400).json({ error: passwordValidity.feedback });
     }
 
     const hash = await argon2.hash(password);

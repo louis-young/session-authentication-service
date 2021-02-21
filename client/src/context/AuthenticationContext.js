@@ -105,6 +105,7 @@ const AuthenticationProvider = ({ children }) => {
         method: "POST",
         credentials: "include",
         headers: {
+          "Content-Type": "application/json",
           "X-CSRF-TOKEN": getCSRFToken(),
         },
       });
@@ -161,11 +162,11 @@ const AuthenticationProvider = ({ children }) => {
         },
       });
 
-      const success = await response.json();
+      const user = await response.json();
 
-      if (!response.ok) throw new Error(success.error);
+      if (!response.ok) throw new Error(user.error);
 
-      setMessage(success.message);
+      setUser(user);
     } catch (error) {
       setError(error.message);
     } finally {

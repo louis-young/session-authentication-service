@@ -4,7 +4,7 @@ import knex from "../knex/knex.js";
 import argon2 from "argon2";
 import mail from "../mail/mail.js";
 
-import { isValidPassword } from "../utilities/utilities.js";
+import { checkPasswordValidity, regenerateSession } from "../utilities/utilities.js";
 
 const sendPasswordResetConfirmationEmail = (email) => {
   const content = {
@@ -28,8 +28,10 @@ router.post("/", async (request, response) => {
       return response.status(400).json({ error: "A token, email and password are required." });
     }
 
-    if (!isValidPassword(password)) {
-      return response.status(400).json({ error: `Please use a stronger password.` });
+    const passwordValidity = checkPasswordValidity(password);
+
+    if (!passwordValidity.valid) {
+      return response.status(400).json({ error: passwordValidity.feedback });
     }
 
     const validToken = await knex("password_reset_tokens")
@@ -51,7 +53,15 @@ router.post("/", async (request, response) => {
 
     await sendPasswordResetConfirmationEmail(email);
 
-    return response.json({ message: "Your password has been reset. Please log in with your new password." });
+    await regenerateSession(request.session);
+
+    const user = await knex("users").where({ email }).first();
+
+    request.session.userId = user.id;
+
+    request.attachCSRFCookie(request, response);
+
+    response.json(user);
   } catch (error) {
     response.status(500).json({ error: "Something went wrong. Please try again." });
   }

@@ -12,20 +12,18 @@ const regenerateSession = (session) => {
   });
 };
 
-const isValidPassword = (password) => {
-  const minimumPasswordLength = 8;
+const checkPasswordValidity = (password) => {
+  const result = zxcvbn(password);
 
-  if (password.length < minimumPasswordLength) {
-    return false;
+  const score = result.score;
+
+  const feedback = result.feedback.suggestions.join();
+
+  if (score <= 2) {
+    return { valid: false, feedback };
   }
 
-  const passwordScore = zxcvbn(password).score;
-
-  if (passwordScore < 2) {
-    return false;
-  }
-
-  return true;
+  return { valid: true };
 };
 
-export { regenerateSession, isValidPassword };
+export { regenerateSession, checkPasswordValidity };
