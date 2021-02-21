@@ -13,8 +13,8 @@ const sendPasswordResetConfirmationEmail = (email) => {
     subject: "Your password has been reset",
     text:
       "Your password has successfully been reset. If you didn't request this, please immediately reset your password.",
-    html:
-      "Your password has successfully been reset. If you didn't request this, please immediately reset your password.",
+    html: `<p>Your password has successfully been reset.</p>
+           <p>If you didn't request this, please immediately reset your password.</p>`,
   };
 
   return mail.send(content);
