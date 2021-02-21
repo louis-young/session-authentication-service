@@ -28,11 +28,11 @@ router.post("/", async (request, response) => {
 
     await knex("password_reset_tokens").insert({ email, expiration, token, used: false });
 
-    const link = `http://localhost:3000/reset-password?token=${token}`;
+    const link = `${CLIENT_BASE_URL}/reset-password?token=${token}`;
 
     const content = {
       to: email,
-      from: "me@louisyoung.co.uk",
+      from: process.env.MAIL_FROM_ADDRESS,
       subject: "Password Reset",
       text: `Please visit ${link} to reset your password.`,
       html: `Please click <a href="${link}" target="_blank">here</a> to reset your password.`,
