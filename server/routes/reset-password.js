@@ -17,6 +17,7 @@ const sendPasswordResetConfirmationEmail = (email) => {
 
   return mail.send(content);
 };
+
 const router = Router();
 
 router.post("/", async (request, response) => {
