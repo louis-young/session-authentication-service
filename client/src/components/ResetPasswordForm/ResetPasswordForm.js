@@ -38,8 +38,8 @@ const ResetPasswordForm = () => {
       {error && <p>Error: {error}</p>}
 
       <form onSubmit={handleSubmit}>
-        <input name="token" type="text" value={token} required readOnly />
-        <input name="email" type="email" value={email} required readOnly />
+        <input name="token" type="text" value={token} required readOnly hidden />
+        <input name="email" type="email" value={email} required readOnly hidden />
         <label>
           New Password
           <input
