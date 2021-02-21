@@ -23,7 +23,7 @@ router.post("/", async (request, response) => {
   try {
     const { token, email, password } = request.body;
 
-    if (!token || !password) {
+    if (!token || !email || !password) {
       return response.status(400).json({ error: "A token, email and password are required." });
     }
 
