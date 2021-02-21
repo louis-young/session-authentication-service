@@ -8,7 +8,7 @@ const LoginForm = () => {
   const [email, setEmail] = useState("me@louisyoung.co.uk");
   const [password, setPassword] = useState("longsecurepassword");
 
-  const { loading, error, login } = useContext(AuthenticationContext);
+  const { authenticating, error, login } = useContext(AuthenticationContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -18,7 +18,6 @@ const LoginForm = () => {
 
   return (
     <section>
-      {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
 
       <form onSubmit={handleSubmit}>
@@ -36,7 +35,9 @@ const LoginForm = () => {
             required
           />
         </label>
-        <button type="submit">Login</button>
+        <button type="submit" disabled={authenticating}>
+          Login
+        </button>
       </form>
 
       <Link to="/forgot-password">Forgot Password</Link>

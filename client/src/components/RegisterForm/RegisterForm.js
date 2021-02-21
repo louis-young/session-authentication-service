@@ -8,7 +8,7 @@ const RegisterForm = () => {
   const [email, setEmail] = useState("me@louisyoung.co.uk");
   const [password, setPassword] = useState("longsecurepassword");
 
-  const { loading, error, register } = useContext(AuthenticationContext);
+  const { authenticating, error, register } = useContext(AuthenticationContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -18,7 +18,6 @@ const RegisterForm = () => {
 
   return (
     <section>
-      {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
 
       <form onSubmit={handleSubmit}>
@@ -36,7 +35,9 @@ const RegisterForm = () => {
             required
           />
         </label>
-        <button type="submit">Register</button>
+        <button type="submit" disabled={authenticating}>
+          Register
+        </button>
       </form>
 
       <Link to="/login">Already have an account? Log In</Link>

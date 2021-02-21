@@ -9,7 +9,7 @@ const ResetPasswordForm = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("longsecurepassword");
 
-  const { loading, error, resetPassword, message } = useContext(AuthenticationContext);
+  const { authenticating, error, resetPassword, message } = useContext(AuthenticationContext);
 
   const location = useLocation();
 
@@ -34,7 +34,6 @@ const ResetPasswordForm = () => {
   return (
     <section>
       {message && <p>{message}</p>}
-      {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
 
       <form onSubmit={handleSubmit}>
@@ -50,7 +49,9 @@ const ResetPasswordForm = () => {
             required
           />
         </label>
-        <button type="submit">Reset Password</button>
+        <button type="submit" disabled={authenticating}>
+          Reset Password
+        </button>
       </form>
     </section>
   );

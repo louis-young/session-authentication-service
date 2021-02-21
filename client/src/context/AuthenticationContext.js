@@ -29,7 +29,6 @@ const AuthenticationProvider = ({ children }) => {
     const checkLoginStatus = async () => {
       try {
         setAuthenticating(true);
-        setError(null);
 
         const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/user`, { credentials: "include" });
 
@@ -51,7 +50,6 @@ const AuthenticationProvider = ({ children }) => {
   const register = async (email, password) => {
     try {
       setAuthenticating(true);
-      setError(null);
 
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/register`, {
         method: "POST",
@@ -80,7 +78,6 @@ const AuthenticationProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       setAuthenticating(true);
-      setError(null);
 
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/login`, {
         method: "POST",
@@ -109,7 +106,6 @@ const AuthenticationProvider = ({ children }) => {
   const logout = async () => {
     try {
       setAuthenticating(true);
-      setError(null);
 
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/logout`, {
         method: "POST",
@@ -136,7 +132,7 @@ const AuthenticationProvider = ({ children }) => {
 
   const forgotPassword = async (email) => {
     try {
-      setError(null);
+      setAuthenticating(true);
 
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/forgot-password`, {
         method: "POST",
@@ -162,7 +158,7 @@ const AuthenticationProvider = ({ children }) => {
 
   const resetPassword = async (email, token, password) => {
     try {
-      setError(null);
+      setAuthenticating(true);
 
       const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/reset-password`, {
         method: "POST",
