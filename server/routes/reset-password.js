@@ -37,7 +37,9 @@ router.post("/", async (request, response) => {
       .first();
 
     if (!validToken) {
-      return response.status(400).json({ error: "Token not found. Please try the reset password process again." });
+      return response
+        .status(400)
+        .json({ error: "No valid token was found. Please try the reset password process again." });
     }
 
     await knex("password_reset_tokens").where({ email }).update({ used: true });
@@ -48,7 +50,7 @@ router.post("/", async (request, response) => {
 
     await sendPasswordResetConfirmationEmail(email);
 
-    return response.json({ message: "Password reset. Please login with your new password." });
+    return response.json({ message: "Your password has been reset. Please log in with your new password." });
   } catch (error) {
     response.status(500).json({ error: "Something went wrong. Please try again." });
   }
