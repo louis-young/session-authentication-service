@@ -12,7 +12,7 @@ const generatePasswordResetToken = () => {
   return token;
 };
 
-const generatePasswordResetExpiryDate = () => {
+const getPasswordResetExpiryDate = () => {
   const date = new Date();
 
   date.setHours(date.getHours() + 2);
@@ -52,7 +52,7 @@ router.post("/", async (request, response) => {
 
     const token = generatePasswordResetToken();
 
-    const expiration = generatePasswordResetExpiryDate();
+    const expiration = getPasswordResetExpiryDate();
 
     await knex("password_reset_tokens").insert({ email, expiration, token, used: false });
 
