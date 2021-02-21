@@ -12,7 +12,6 @@ router.post("/", async (request, response) => {
 
     response.json({ message: "You have successfully logged out." });
   } catch (error) {
-    console.log(console.error);
     response.status(500).json({ error: "Something went wrong." });
   }
 });

@@ -35,7 +35,6 @@ router.post("/", async (request, response) => {
 
     response.json(user);
   } catch (error) {
-    console.error(error.message);
     response.status(500).json({ error: "Something went wrong." });
   }
 });
