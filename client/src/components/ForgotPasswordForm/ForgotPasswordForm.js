@@ -3,7 +3,7 @@ import React, { useState, useContext } from "react";
 import { AuthenticationContext } from "../../context/AuthenticationContext";
 
 const ForgotPasswordForm = () => {
-  const [email, setEmail] = useState("louis_omg@hotmail.com");
+  const [email, setEmail] = useState("me@louisyoung.co.uk");
 
   const { loading, error, forgotPassword, message } = useContext(AuthenticationContext);
 

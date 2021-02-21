@@ -5,7 +5,7 @@ export const seed = (knex) => {
       return knex("users").insert([
         { name: "John", email: "john@domain.tld" },
         { name: "Alan", email: "alan@domain.tld" },
-        { name: "Bob", email: "louis_omg@hotmail.com" },
+        { name: "Louis", email: "me@louisyoung.co.uk" },
       ]);
     });
 };

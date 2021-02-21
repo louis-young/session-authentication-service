@@ -7,7 +7,7 @@ import { AuthenticationContext } from "../../context/AuthenticationContext";
 const ResetPasswordForm = () => {
   const [token, setToken] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("$66TinCup66$");
+  const [password, setPassword] = useState("longsecurepassword");
 
   const { loading, error, resetPassword, message } = useContext(AuthenticationContext);
 

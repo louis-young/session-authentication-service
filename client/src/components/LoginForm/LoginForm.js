@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 import { AuthenticationContext } from "../../context/AuthenticationContext";
 
 const LoginForm = () => {
-  const [email, setEmail] = useState("louis_omg@hotmail.com");
-  const [password, setPassword] = useState("$66TinCup66$");
+  const [email, setEmail] = useState("me@louisyoung.co.uk");
+  const [password, setPassword] = useState("longsecurepassword");
 
   const { loading, error, login } = useContext(AuthenticationContext);
 
