@@ -10,10 +10,10 @@ router.post("/", async (request, response) => {
 
     request.attachCSRFCookie(request, response);
 
-    response.json({ message: "Logged user out." });
+    response.json({ message: "You have successfully logged out." });
   } catch (error) {
     console.log(console.error);
-    response.status(500).json({ error: "Something went wrong. Please try again." });
+    response.status(500).json({ error: "Something went wrong." });
   }
 });
 

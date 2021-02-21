@@ -12,13 +12,13 @@ router.post("/", async (request, response) => {
     const { email, password } = request.body;
 
     if (!email || !password) {
-      return response.status(400).json({ error: "An email and password are required." });
+      return response.status(400).json({ error: "Email and password are required." });
     }
 
     const userExists = await knex("users").where({ email }).first();
 
     if (userExists) {
-      return response.status(400).json({ error: "A user with this email address already exists." });
+      return response.status(400).json({ error: "An account with this email address already exists." });
     }
 
     const passwordValidity = checkPasswordValidity(password);
@@ -39,7 +39,7 @@ router.post("/", async (request, response) => {
 
     response.json(user);
   } catch (error) {
-    response.status(500).json({ error: "Something went wrong. Please try again." });
+    response.status(500).json({ error: "Something went wrong." });
   }
 });
 

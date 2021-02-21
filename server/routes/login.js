@@ -1,7 +1,6 @@
 import { Router } from "express";
 
 import knex from "../knex/knex.js";
-
 import argon2 from "argon2";
 
 import { regenerateSession } from "../utilities/utilities.js";
@@ -13,7 +12,7 @@ router.post("/", async (request, response) => {
     const { email, password } = request.body;
 
     if (!email || !password) {
-      return response.status(400).json({ error: "An email and password are required." });
+      return response.status(400).json({ error: "Email and password are required." });
     }
 
     const user = await knex("users").where({ email }).first();
@@ -37,7 +36,7 @@ router.post("/", async (request, response) => {
     response.json(user);
   } catch (error) {
     console.error(error.message);
-    response.status(500).json({ error: "Something went wrong. Please try again." });
+    response.status(500).json({ error: "Something went wrong." });
   }
 });
 

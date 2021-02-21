@@ -26,9 +26,10 @@ const sendPasswordResetEmail = (token, email) => {
   const content = {
     to: email,
     from: process.env.MAIL_FROM_ADDRESS,
-    subject: "Password Reset",
+    subject: "Password reset",
     text: `Please visit ${link} to reset your password.`,
-    html: `Please click <a href="${link}" target="_blank">here</a> to reset your password.`,
+    html: `<p>Please click <a href="${link}" target="_blank">here</a> to reset your password.</p>
+           <p>If you didn't request this, please ignore this email.</p>`,
   };
 
   return mail.send(content);
@@ -43,9 +44,9 @@ router.post("/", async (request, response) => {
     const user = await knex("users").where({ email }).first();
 
     if (!user) {
-      return response
-        .status(200)
-        .json({ message: "If an account with this email address exists, we have sent you a password reset email." });
+      return response.status(200).json({
+        message: "If we have an account with this email address on record, a password reset email has been sent.",
+      });
     }
 
     await knex("password_reset_tokens").where({ email }).update({ used: true });
@@ -58,11 +59,11 @@ router.post("/", async (request, response) => {
 
     await sendPasswordResetEmail(token, email);
 
-    return response
-      .status(200)
-      .json({ message: "If an account with this email address exists, we have sent you a password reset email." });
+    return response.status(200).json({
+      message: "If we have an account with this email address on record, a password reset email has been sent.",
+    });
   } catch (error) {
-    response.status(500).json({ error: "Something went wrong. Please try again." });
+    response.status(500).json({ error: "Something went wrong." });
   }
 });
 
