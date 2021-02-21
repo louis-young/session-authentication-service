@@ -1,9 +1,8 @@
 import { Router } from "express";
 
 import knex from "../knex/knex.js";
-
-import zxcvbn from "zxcvbn";
 import argon2 from "argon2";
+import mail from "../mail/mail.js";
 
 import { isValidPassword } from "../utilities/utilities.js";
 
@@ -37,6 +36,16 @@ router.post("/", async (request, response) => {
     const hash = await argon2.hash(password);
 
     await knex("users").where({ email }).update({ password: hash });
+
+    const content = {
+      to: email,
+      from: process.env.MAIL_FROM_ADDRESS,
+      subject: "Your Password Has Been Reset",
+      text: "Your password has been reset. If this wasn't you, please reset your password.",
+      html: "Your password has been reset. If this wasn't you, please reset your password.",
+    };
+
+    await mail.send(content);
 
     return response.json({ message: "Password reset. Please login with your new password." });
   } catch (error) {

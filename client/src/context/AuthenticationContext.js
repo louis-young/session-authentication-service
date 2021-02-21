@@ -1,21 +1,31 @@
 import { useState, useEffect, createContext } from "react";
 
+import { useLocation } from "react-router-dom";
+
 import { getCSRFToken } from "../utilities/utilities";
 
 const AuthenticationContext = createContext();
 
 const AuthenticationProvider = ({ children }) => {
-  const [loading, setLoading] = useState(false);
+  const [authenticating, setAuthenticating] = useState(true);
   const [error, setError] = useState(false);
   const [user, setUser] = useState(null);
+  const [message, setMessage] = useState(false);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    setError(null);
+    setMessage(null);
+  }, [location]);
 
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
-        setLoading(true);
+        setAuthenticating(true);
         setError(null);
 
-        const response = await fetch("http://localhost:5000/api/user", { credentials: "include" });
+        const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/user`, { credentials: "include" });
 
         const user = await response.json();
 
@@ -23,9 +33,9 @@ const AuthenticationProvider = ({ children }) => {
 
         setUser(user);
       } catch (error) {
-        // TODO: ...
+        console.error(error.message);
       } finally {
-        setLoading(false);
+        setAuthenticating(false);
       }
     };
 
@@ -34,10 +44,10 @@ const AuthenticationProvider = ({ children }) => {
 
   const register = async (email, password) => {
     try {
-      setLoading(true);
+      setAuthenticating(true);
       setError(null);
 
-      const response = await fetch("http://localhost:5000/api/register", {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/register`, {
         method: "POST",
         credentials: "include",
         body: JSON.stringify({ email, password }),
@@ -55,16 +65,16 @@ const AuthenticationProvider = ({ children }) => {
     } catch (error) {
       setError(error.message);
     } finally {
-      setLoading(false);
+      setAuthenticating(false);
     }
   };
 
   const login = async (email, password) => {
     try {
-      setLoading(true);
+      setAuthenticating(true);
       setError(null);
 
-      const response = await fetch("http://localhost:5000/api/login", {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/login`, {
         method: "POST",
         credentials: "include",
         body: JSON.stringify({ email, password }),
@@ -82,16 +92,16 @@ const AuthenticationProvider = ({ children }) => {
     } catch (error) {
       setError(error.message);
     } finally {
-      setLoading(false);
+      setAuthenticating(false);
     }
   };
 
   const logout = async () => {
     try {
-      setLoading(true);
+      setAuthenticating(true);
       setError(null);
 
-      const response = await fetch("http://localhost:5000/api/logout", {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/logout`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -107,12 +117,66 @@ const AuthenticationProvider = ({ children }) => {
     } catch (error) {
       setError(error.message);
     } finally {
-      setLoading(false);
+      setAuthenticating(false);
+    }
+  };
+
+  const forgotPassword = async (email) => {
+    try {
+      setError(null);
+
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/forgot-password`, {
+        method: "POST",
+        body: JSON.stringify({ email }),
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-TOKEN": getCSRFToken(),
+        },
+      });
+
+      const sent = await response.json();
+
+      if (!response.ok) throw new Error(sent.error);
+
+      setMessage(sent.message);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setAuthenticating(false);
+    }
+  };
+
+  const resetPassword = async (email, token, password) => {
+    try {
+      setError(null);
+
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/reset-password`, {
+        method: "POST",
+        body: JSON.stringify({ email, token, password }),
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-TOKEN": getCSRFToken(),
+        },
+      });
+
+      const success = await response.json();
+
+      if (!response.ok) throw new Error(success.error);
+
+      setMessage(success.message);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setAuthenticating(false);
     }
   };
 
   return (
-    <AuthenticationContext.Provider value={{ loading, error, user, register, login, logout }}>
+    <AuthenticationContext.Provider
+      value={{ authenticating, error, user, register, login, logout, forgotPassword, message, resetPassword }}
+    >
       {children}
     </AuthenticationContext.Provider>
   );

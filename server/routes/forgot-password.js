@@ -20,7 +20,9 @@ router.post("/", async (request, response) => {
 
     await knex("password_reset_tokens").where({ email }).update({ used: true });
 
-    const token = crypto.randomBytes(64).toString("base64");
+    const bytes = crypto.randomBytes(64).toString("base64");
+
+    const token = bytes.replace(/\//g, "_").replace(/\+/g, "-");
 
     const expiration = new Date();
 
@@ -28,7 +30,7 @@ router.post("/", async (request, response) => {
 
     await knex("password_reset_tokens").insert({ email, expiration, token, used: false });
 
-    const link = `${CLIENT_BASE_URL}/reset-password?token=${token}`;
+    const link = `${process.env.CLIENT_BASE_URL}/reset-password?token=${token}&email=${email}`;
 
     const content = {
       to: email,

@@ -1,30 +1,13 @@
-import React, { useContext } from "react";
+import React from "react";
 
-import { AuthenticationContext } from "./context/AuthenticationContext";
-
-import Register from "./components/Register/Register";
-import Login from "./components/Login/Login";
+import Header from "./components/Header/Header";
+import Routes from "./routes/Routes";
 
 const App = () => {
-  const { loading, error, user, logout } = useContext(AuthenticationContext);
-
-  if (!user) {
-    return (
-      <>
-        <Register />
-        <Login />
-      </>
-    );
-  }
-
   return (
     <section>
-      {loading && <p>Loading...</p>}
-      {error && <p>Error: {error}</p>}
-
-      <pre>{user && <p>Hello {user.email}</p>}</pre>
-
-      <button onClick={logout}>Logout</button>
+      <Header />
+      <Routes />
     </section>
   );
 };

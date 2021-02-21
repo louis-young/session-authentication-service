@@ -1,17 +1,19 @@
 import React, { useState, useContext } from "react";
 
+import { Link } from "react-router-dom";
+
 import { AuthenticationContext } from "../../context/AuthenticationContext";
 
-const Register = () => {
-  const [email, setEmail] = useState("bob@domain.tld");
-  const [password, setPassword] = useState("longsecurepassword");
+const LoginForm = () => {
+  const [email, setEmail] = useState("louis_omg@hotmail.com");
+  const [password, setPassword] = useState("$66TinCup66$");
 
-  const { loading, error, register } = useContext(AuthenticationContext);
+  const { loading, error, login } = useContext(AuthenticationContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    register(email, password);
+    login(email, password);
   };
 
   return (
@@ -19,7 +21,6 @@ const Register = () => {
       {loading && <p>Loading...</p>}
       {error && <p>Error: {error}</p>}
 
-      <h2>Register</h2>
       <form onSubmit={handleSubmit}>
         <label>
           Email
@@ -35,10 +36,12 @@ const Register = () => {
             required
           />
         </label>
-        <button type="submit">Register</button>
+        <button type="submit">Login</button>
       </form>
+
+      <Link to="/forgot-password">Forgot Password</Link>
     </section>
   );
 };
 
-export default Register;
+export default LoginForm;
