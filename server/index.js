@@ -4,10 +4,8 @@ import cors from "cors";
 import helmet from "helmet";
 import connectSessionKnex from "connect-session-knex";
 import session from "express-session";
-import knex from "./knex/knex.js";
-
-import useCSRFProtection from "./middleware/csrf.js";
-
+import { knex } from "./knex/knex.js";
+import { useCSRFProtection } from "./middleware/csrf.js";
 import register from "./routes/register.js";
 import login from "./routes/login.js";
 import logout from "./routes/logout.js";
@@ -36,7 +34,7 @@ app.use(
       httpOnly: true,
       secure: false, // `true` on HTTPS.
       sameSite: "lax",
-      maxAge: 1000 * 3600 * 24 * 30,
+      maxAge: 1000 * 60 * 60 * 24 * 30, // One month.
     },
     secret: process.env.SESSION_SECRET,
     resave: false,

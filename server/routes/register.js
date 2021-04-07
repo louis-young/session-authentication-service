@@ -1,9 +1,8 @@
 import { Router } from "express";
-
-import knex from "../knex/knex.js";
+import { knex } from "../knex/knex.js";
 import argon2 from "argon2";
-
-import { checkPasswordValidity, regenerateSession } from "../utilities/utilities.js";
+import { checkPasswordValidity } from "../utilities/passwords.js";
+import { regenerateSession } from "../utilities/sessions.js";
 
 const router = Router();
 
@@ -12,13 +11,17 @@ router.post("/", async (request, response) => {
     const { email, password } = request.body;
 
     if (!email || !password) {
-      return response.status(400).json({ error: "Email and password are required." });
+      return response
+        .status(400)
+        .json({ error: "Email and password are required." });
     }
 
-    const userExists = await knex("users").where({ email }).first();
+    const existingUser = await knex("users").where({ email }).first();
 
-    if (userExists) {
-      return response.status(400).json({ error: "An account with this email address already exists." });
+    if (existingUser) {
+      return response
+        .status(400)
+        .json({ error: "An account with this email address already exists." });
     }
 
     const passwordValidity = checkPasswordValidity(password);
@@ -27,9 +30,11 @@ router.post("/", async (request, response) => {
       return response.status(400).json({ error: passwordValidity.feedback });
     }
 
-    const hash = await argon2.hash(password);
+    const hashedPassword = await argon2.hash(password);
 
-    const [user] = await knex("users").insert({ email, password: hash }).returning(["id", "email"]);
+    const [user] = await knex("users")
+      .insert({ email, password: hashedPassword })
+      .returning(["id", "email"]);
 
     await regenerateSession(request.session);
 

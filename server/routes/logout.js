@@ -1,6 +1,5 @@
 import { Router } from "express";
-
-import { regenerateSession } from "../utilities/utilities.js";
+import { regenerateSession } from "../utilities/sessions.js";
 
 const router = Router();
 

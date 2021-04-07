@@ -1,6 +1,5 @@
 import { Router } from "express";
-
-import knex from "../knex/knex.js";
+import { knex } from "../knex/knex.js";
 
 const router = Router();
 
@@ -12,7 +11,9 @@ router.get("/", async (request, response) => {
       return response.status(401).json({ error: "User not authenticated." });
     }
 
-    const [user] = await knex("users").select("id", "email").where({ id: userId });
+    const [user] = await knex("users")
+      .select("id", "email")
+      .where({ id: userId });
 
     if (!user) {
       return response.status(401).json({ error: "User not authenticated." });

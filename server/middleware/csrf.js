@@ -1,6 +1,6 @@
 import csrf from "csurf";
 
-const useCSRFProtection = (app, { cookieRefreshTime = 60000 } = {}) => {
+export const useCSRFProtection = (app, { cookieRefreshTime = 60000 } = {}) => {
   app.use(
     csrf({
       value: (request) => request.get("X-CSRF-TOKEN"),
@@ -28,12 +28,13 @@ const useCSRFProtection = (app, { cookieRefreshTime = 60000 } = {}) => {
   app.use((request, response, next) => {
     request.attachCSRFCookie = attachCSRFCookie;
 
-    if (!request.session.csrfCookieSet || request.session.csrfCookieSet < Date.now() - cookieRefreshTime) {
+    if (
+      !request.session.csrfCookieSet ||
+      request.session.csrfCookieSet < Date.now() - cookieRefreshTime
+    ) {
       attachCSRFCookie(request, response);
     }
 
     next();
   });
 };
-
-export default useCSRFProtection;
