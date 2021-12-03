@@ -20,7 +20,7 @@ This was a project to learn more about authentication and security. Please note 
 - Cross-Origin Resource Sharing protection (CORS).
 - HTTP header security (via Helmet).
 
-## Technology Stack
+## Technologies
 
 - Node
 - Express
