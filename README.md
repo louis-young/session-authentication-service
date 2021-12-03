@@ -1,6 +1,6 @@
 # Session Authentication Service
 
-A session-based authentication service - written in Node/Express with Knex and Postgres.
+A session-based authentication service - built with Node/Express with Knex and Postgres.
 
 ## Description
 
