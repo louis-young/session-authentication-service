@@ -4,7 +4,7 @@ A session-based authentication service written in Node/Express with Knex and Pos
 
 ## Description
 
-A hand rolled authentication service with a basic client included built in React which interfaces with the service that features registration, login and change password forms as well as protected routes.
+A hand rolled authentication service with a client included that interfaces with the service, written in React. It features protected routes and the registration, change password and login forms.
 
 ## Motivation
 
