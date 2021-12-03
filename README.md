@@ -12,13 +12,13 @@ This was a project to learn more about authentication and security. Please note 
 
 ## Features
 
-- Cryptographic password hashing algorithm (Argon2).
-- Password strength estimation (zxcvbn).
-- Password reset (SendGrid).
-- Database sessions (Postgres).
-- Cross-Site Request Forgery protection.
-- Cross-Origin Resource Sharing protection.
-- HTTP header security (Helmet).
+- Cryptographic password hashing algorithm (via Argon2).
+- Password strength estimation (via zxcvbn).
+- Password reset (over SMTP via SendGrid).
+- Database sessions (in Postgres).
+- Cross-Site Request Forgery protection (CSRF).
+- Cross-Origin Resource Sharing protection (CORS).
+- HTTP header security (via Helmet).
 
 ## Technology Stack
 
