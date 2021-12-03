@@ -1,10 +1,10 @@
 # Session Authentication Service
 
-A session-based authentication service written in Node/Express with Knex and Postgres.
+A session-based authentication service - written in Node/Express with Knex and Postgres.
 
 ## Description
 
-A hand rolled authentication service with a client included that interfaces with the service, written in React. It features protected routes and the registration, change password and login forms.
+A hand rolled authentication service with a client included that interfaces with the service - written in React. It features protected routes and the registration, change password and login forms.
 
 ## Motivation
 
