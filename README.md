@@ -29,3 +29,15 @@ This was a project to learn more about authentication and security. Please note 
 - Express.
 - Postgres.
 - Knex.
+
+## Packages
+
+- `argon2`
+- `express-session`
+- `connect-session-knex`
+- `csurf`
+- `zxcvbn`
+- `helmet`
+- `cors`
+- `crypto`
+- `@sendgrid/mail`
