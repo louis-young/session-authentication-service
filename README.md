@@ -1,3 +1,5 @@
+⚠️ Please note that this is an old project and does not reflect the quality of my current work.
+
 # Session Authentication Service
 
 A session-based authentication service built with Node/Express and Knex/Postgres.
