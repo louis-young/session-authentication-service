@@ -24,7 +24,6 @@ This was a project to learn more about authentication and security. Please note 
 
 - JavaScriot.
 - React.
-- Sass (BEM).
 - Node.
 - Express.
 - Postgres.
