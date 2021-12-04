@@ -22,7 +22,7 @@ This was a project to learn more about authentication and security. Please note 
 
 ## Technologies
 
-- JavaScriot.
+- JavaScript.
 - React.
 - Node.
 - Express.
