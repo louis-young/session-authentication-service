@@ -4,7 +4,7 @@ A session-based authentication service built with Node/Express and Knex/Postgres
 
 ## Description
 
-A hand rolled authentication service with a client, built in React, that interfaces with the service. It features protected routes and the registration, change password and login forms.
+A hand rolled authentication service with a client, built with React, that interfaces with the service. It features protected routes and the registration, change password and login forms.
 
 ## Motivation
 
